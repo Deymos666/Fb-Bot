@@ -3,9 +3,12 @@ module.exports = function(controller) {
     // look for sticker, image and audio attachments
     // capture them, and fire special events
     controller.on('facebook_postback', function(bot, message) {
-        bot.reply(message,'Yaroslav');
+        bot.reply(message,'Hello Yaroslav');
     });
 
+    controller.on('facebook_postback', function(bot, message) {
+        bot.reply(message,'Open Ref link ?');
+    });
 
     controller.on('message_received', function(bot, message) {
 
