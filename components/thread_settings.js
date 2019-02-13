@@ -13,15 +13,15 @@ module.exports = function(controller) {
             "composer_input_disabled": false,
             "call_to_actions": [    
                 {
-                    "type":"postback",
-                    "title":"Main Menu",
-                    "payload":"start_button_clicked",
+                    "type":"text",
+                    "title":"Main menu",
+                    "payload":"Main menu",
                     
                 },
                 {
-                    "type":"postback",
-                    "title":"Catalog",
-                    "payload":"Catalog"
+                    "type":"text",
+                    "title":"Shop",
+                    "payload":"Shop"
                     
                 }
             ]
