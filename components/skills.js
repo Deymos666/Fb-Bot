@@ -144,12 +144,20 @@ module.exports = function(controller) {
   })
 
   controller.on('facebook_postback', function (bot, message) {
+    if (typeof (message.payload) === 'string' && ~message.payload.indexOf('buy')) {
+      require('./favourites.js')(bot, message)
+      console.log("Its a Buy process");
+    }
+  })
+
+  controller.on('facebook_postback', function (bot, message) {
     if (typeof (message.payload) === 'string' && ~message.payload.indexOf('view_more')) {
       require('./view.js')(bot, message)
       console.log("Its a view");
     }
   })
 
+  
 
 
   controller.on('message_received', function (bot, message) {
