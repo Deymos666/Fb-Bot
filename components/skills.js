@@ -1,10 +1,9 @@
   const {findProduct} = require("./shop.js");
   const { to } = require('await-to-js');
   const {showFav} =require('./shop.js');
-  let err,data1; 
-  const Customer = require('./database/database')
-  const bbyApiKey = process.env.bby_api_key
-  const bby = require('bestbuy')(bbyApiKey)
+
+
+
 
 
 module.exports = function(controller) {
@@ -70,8 +69,8 @@ module.exports = function(controller) {
 
   controller.hears(["Shop"],'facebook_postback,message_received', async function(bot, message) {
 
-    [err,data1] = await to (findProduct("Movie"));
-    console.log('data result =' + JSON.stringify(data1));
+    [err,products] = await to (findProduct("Movie"));
+    console.log('data result =' + JSON.stringify(products));
     if(err){
         return console.log(err);
     }
@@ -83,32 +82,30 @@ module.exports = function(controller) {
             "elements":[]
       }
     }
-
-    
-      for(let i in data1) {
+      for(let product of products) {
         let element =
              {
-              "title":`${data1[i].name}`,
-              "image_url":`${data1[i].image}`,
-              "subtitle":`${data1[i].sku}`,
+              "title":`${product.name}`,
+              "image_url":`${product.image}`,
+              "subtitle":`${product.sku}`,
               "default_action": {
                 "type": "web_url",
                 "url": "https://google.com",
                 "messenger_extensions": true,
                 "webview_height_ratio": "tall",
-                "fallback_url":`${data1[i].image}` 
+                "fallback_url":`${product.image}` 
               },
               "buttons":[
                 {
                   "type":"postback",
                   "title":"Add to favorites",
-                  "payload":"add_to_favourites" + `${data1[i].sku}`,
+                  "payload":"add_to_favourites" + `${product.sku}`,
                   
                 },
                 {
-                  "type":"postback",
-                  "title":"View More",
-                  "payload":"More"
+                  'type': 'postback',
+                  'title': 'View more',
+                  'payload': `view_more ${product.sku}`
                 },
                 {
                   "type":"postback",
@@ -145,6 +142,14 @@ module.exports = function(controller) {
       console.log("Its a favorites");
     }
   })
+
+  controller.on('facebook_postback', function (bot, message) {
+    if (typeof (message.payload) === 'string' && ~message.payload.indexOf('view_more')) {
+      require('./view.js')(bot, message)
+      console.log("Its a view");
+    }
+  })
+
 
 
   controller.on('message_received', function (bot, message) {

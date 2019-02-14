@@ -1,18 +1,18 @@
 
-const Customer = require('./db/customer_schema')
+const Customer = require('./database/database')
 const mainMenuButton = {
   'content_type': 'text',
-  'title': 'To main menu',
-  'payload': 'main_menu'
+  'title': 'Main menu',
+  'payload': 'Main menu'
 }
 const shopButton = {
   'content_type': 'text',
-  'title': 'Go to shop',
+  'title': 'Shop',
   'payload': 'shop'
 }
 const favouritesButton = {
   'content_type': 'text',
-  'title': 'To favourites',
+  'title': 'Favourites',
   'payload': 'favourites'
 }
 

@@ -6,12 +6,12 @@ const Customer = require('./database/database')
 
 const mainMenuButton = {
   'content_type': 'text',
-  'title': 'To main menu',
+  'title': 'Main menu',
   'payload': 'main_menu'
 }
 const shopButton = {
   'content_type': 'text',
-  'title': 'Go to shop',
+  'title': 'Shop',
   'payload': 'shop'
 }
 
