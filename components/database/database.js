@@ -17,7 +17,6 @@ const customerSchema = new Schema({
   favourites: {
     type: [String]
   },
-  
   coordinates: {
     phone: String,
     latitude: Number,

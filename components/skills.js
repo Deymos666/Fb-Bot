@@ -169,20 +169,13 @@ module.exports = function(controller) {
 
   
   
-    controller.on('message_received', function (bot, message) {
-      if (message.quick_reply) {
-        if (message.quick_reply.payload === 'my_puchares') {
-          require('./pushares.js')(bot, message)
-        }
-      }
-    })
-  
 
 
 
 
 
 
+//BUY PRODUCTS ***********************
 controller.hears(['buy'], 'message_received,facebook_postback', function(bot, message) {
 
   bot.startConversation(message, function(err, convo) {
@@ -205,7 +198,7 @@ controller.hears(['buy'], 'message_received,facebook_postback', function(bot, me
     let favSku = message.postback.payload.split(' ')[1];
     console.log(favSku,"12899999999999989879*******(!************8");
     Customer.updateOne({messenger_id:`${msgId}`},{
-       $set: { "coordinates.phone": `${user_number}`,"coordinates.sku":`${favSku}` },
+       $set: { coordinates: `${user_number}`,"coordinates.sku":`${favSku}` },
    
     },function(err,resp){
       if(err){
@@ -266,7 +259,7 @@ controller.hears(['buy'], 'message_received,facebook_postback', function(bot, me
       quick_replies: 
     [{
       content_type: "text",
-      title: 'My pushares',
+      title: 'My purchases',
        payload: 'my_puchares',
    }
   ]
@@ -276,6 +269,74 @@ controller.hears(['buy'], 'message_received,facebook_postback', function(bot, me
     });
   });
 });
+
+controller.hears(["My purchases"],'facebook_postback,message_received',  function(bot, message) {
+    const msgId = message.sender.id;
+    Customer.findOne({ messenger_id: `${msgId}` }).exec(function (err, customer) {
+      const pucharesSku = customer.coordinates.sku 
+      const pucharesDate = customer.coordinates.date;
+      console.log('Data puchares; ' + pucharesDate);
+        console.log('Sku puchares ' + pucharesSku);
+        console.log("User ID " + msgId);
+        let obj = {
+          "type":"template",
+              "payload":{
+                "template_type":"generic",
+                "elements":[]
+          }
+        }
+            let element =
+                 {
+                  "title":`${pucharesDate}`,
+                  "image_url":``,
+                  "subtitle":`${pucharesSku}`,
+                  "default_action": {
+                    "type": "web_url",
+                    "url": "https://google.com",
+                    "messenger_extensions": true,
+                    "webview_height_ratio": "tall",
+                    "fallback_url":`` 
+                  },
+                  "buttons":[
+                    {
+                      "type":"postback",
+                      "title":"Return",
+                      "payload":"Return",
+                      
+                    }            
+                  ]      
+               
+          }
+        
+          obj.payload.elements.push(element);
+        console.log(JSON.stringify(obj,null,'  '));
+          bot.reply(message, {attachment: obj});
+          bot.startConversation(message, function(err, convo) {
+            convo.say({
+                text: '',
+                quick_replies: 
+                [{
+                  content_type: 'text',
+                  title: 'Return',
+                  payload: 'Return',
+                }]
+              });
+        });
+        
+    })
+  
+    
+    
+    
+});
+
+
+
+
+
+
+
+
 
 }
 
