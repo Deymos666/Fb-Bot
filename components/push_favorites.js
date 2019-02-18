@@ -62,8 +62,8 @@ module.exports = function (bot, payloadMessage) {
                 },
                 {
                   'type': 'postback',
-                  'title': `Buy for ${data.products[0].salePrice}$`,
-                  'payload': `buy_product ${data.products[0].sku} ${data.products[0].salePrice}`
+                  'title': `Buy ${data.products[0].salePrice}`,
+                  'payload': `Buy ${data.products[0].sku} ${data.products[0].salePrice}`
                 }
               ]
             })

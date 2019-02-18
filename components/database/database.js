@@ -17,17 +17,21 @@ const customerSchema = new Schema({
   favourites: {
     type: [String]
   },
-  purchases: [{
+  
+  coordinates: {
+    phone: String,
+    latitude: Number,
+    longitude: Number,
+    date: String,
+    sku: Number,
+  },
+  purchases: {
     product: String,
     price: String,
     phone: String,
-    coordinates: {
-      latitude: Number,
-      longitude: Number
-    },
     nps_index: String,
-    date: { type: Date, default: Date.now }
-  }]
+
+  }
 }, { versionKey: false })
 
 const Customer = mongoose.model('Customer', customerSchema)

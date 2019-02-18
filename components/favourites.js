@@ -17,7 +17,7 @@ const favouritesButton = {
 }
 
 module.exports = function (bot, message) {
-  const msgId = message.sender.id
+  const msgId = message.sender.id;
   const payloadFavouriteSKU = message.payload.split(' ')[1]
   Customer.findOne({ messenger_id: `${msgId}` }).exec(function (err, customer) {
     if (err) return console.log(err)
