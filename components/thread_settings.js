@@ -20,7 +20,7 @@ module.exports = function(controller) {
                 },
                 {
                     "type":"text",
-                    "title":"Shop",
+                    "title":"Catalog",
                     "payload":"Shop"
                     
                 }
