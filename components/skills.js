@@ -38,17 +38,6 @@ module.exports = function(controller) {
         }
     })
 
-      // controller.on('facebook_postback', function (bot, message) {
-      //   if (message.payload === 'start_button_clicked') {
-      //     if (message.referral) {
-      //       require('./ref_link.js')(bot, message)
-      //     }
-      //     mainMenuButton(bot, message)
-      //   }
-      // })
-     
-
-
     controller.hears(["No","Return","Main menu"],'facebook_postback, message_received', function(bot, message) {
 
           bot.startConversation(message, function(err, convo) {
@@ -180,94 +169,94 @@ module.exports = function(controller) {
   })
 //referal programm
 
-// controller.hears(['Yes'], 'message_received,facebook_postback', function(bot, message) {  
-// const ref = message.referral.ref
-// const msgId = message.sender.id
-// Customer.findOne({ messenger_id: `${msgId}` }).exec(function (err, customer) {
-//   if (err) return console.log(err)
-//   if (!customer) {
-//     Customer.create({ messenger_id: `${msgId}`, invitations: [] })
-//     console.log(`New customer was successfully added to base.`)
-//     bot.reply(message, {
-//       'text': `Your link for friends ${messengerLink}?ref=${msgId}\nShare with 3 friends and get 1 free product`,
-//       'quick_replies': [{
-//         content_type: 'text',
-//         title: 'My purchases',
-//         payload: 'my_puchares',
-//       },
-//       {
-//         content_type: 'text',
-//         title: 'Shop',
-//         payload: 'shop',
-//       }]
-//     })
-//   } else {
-//     if (!customer.invitations.length) {
-//       customer.invitations = []
-//       customer.save(function (err) {
-//         if (err) console.log(err)
-//         console.log(`Customers invitations were successfully created with [].`)
-//         bot.reply(message, {
-//           'text': `Your link for friends  ${messengerLink}?ref=${msgId}\nShare with 3 friends and get 1 free product`,
-//           'quick_replies': [{
-//             content_type: 'text',
-//             title: 'My purchases',
-//             payload: 'my_puchares',
-//           },
-//           {
-//             content_type: 'text',
-//             title: 'Shop',
-//             payload: 'shop',
-//           }]
-//         })
-//       })
-//     } else {
-//       bot.reply(message, {
-//         'text': `Your link for friends  ${messengerLink}?ref=${msgId}\nShare with 3 friends and get 1 free product`,
-//         'quick_replies': [{
-//           content_type: 'text',
-//           title: 'My purchases',
-//           payload: 'my_puchares',
-//         },
-//         {
-//           content_type: 'text',
-//           title: 'Shop',
-//           payload: 'shop',
-//         }]
-//       })
-//     }
-//   }
-// })
-// if (ref !== msgId) {
-//   Customer.findOne({ messenger_id: `${ref}` }).exec(function (err, customer) {
-//     if (err) return console.log(err)
-//     if (!customer) {
-//       console.log(`No have customers with id ${ref} in base. Bad REF in link`)
-//     } else {
-//       if (!~customer.invitations.indexOf(msgId)) {
-//         customer.invitations.push(msgId)
-//         customer.save(function (err) {
-//           if (err) console.log(err)
-//           console.log(`Customers ${ref} invitations were successfully updated.`)
-//           bot.say(
-//             {
-//               text: `${messengerLink}?ref=${ref} is activated by user ${msgId}`,
-//               channel: `${ref}`
-//             }
-//           )
-//           if (customer.invitations !== 0 && customer.invitations.length % 3 === 0) {
-//             bot.say(
-//               {
-//                 text: `You have collected 3 activated invitations. Now you can get 1 free product in our store.`,
-//                 channel: `${ref}`
-//               })
-//           }
-//         })
-//       }
-//     }
-//   })
-// }
-// });
+controller.hears(['Yes','To invite a friend'], 'message_received,facebook_postback', function(bot, message) {  
+const msgId = message.sender.id
+console.log(message);
+Customer.findOne({ messenger_id: `${msgId}` }).exec(function (err, customer) {
+  err? console.log(err): null;
+  if (!customer) {
+    Customer.create({ messenger_id: `${msgId}`, invitations: [] })
+    console.log(`New customer was successfully added to base.`)
+    bot.reply(message, {
+      'text': `Your link for friends ${messengerLink}?ref=${msgId}\nShare with 3 friends and get 1 free product`,
+      'quick_replies': [{
+        content_type: 'text',
+        title: 'My purchases',
+        payload: 'my_puchares',
+      },
+      {
+        content_type: 'text',
+        title: 'Shop',
+        payload: 'shop',
+      }]
+    })
+  } else {
+    if (!customer.invitations.length) {
+      customer.invitations = []
+      customer.save(function (err) {
+        if (err) console.log(err)
+        console.log(`Customers invitations were successfully created with [].`)
+        bot.reply(message, {
+          'text': `Share with 3 friends and get 1 free product  ${messengerLink}?ref=${msgId}\n`,
+          'quick_replies': [{
+            content_type: 'text',
+            title: 'My purchases',
+            payload: 'my_puchares',
+          },
+          {
+            content_type: 'text',
+            title: 'Shop',
+            payload: 'shop',
+          }]
+        })
+      })
+    } else {
+      bot.reply(message, {
+        'text': `Your link for friends  ${messengerLink}?ref=${msgId}\nShare with 3 friends and get 1 free product`,
+        'quick_replies': [{
+          content_type: 'text',
+          title: 'My purchases',
+          payload: 'my_puchares',
+        },
+        {
+          content_type: 'text',
+          title: 'Shop',
+          payload: 'shop',
+        }]
+      })
+    }
+  }
+})
+if (ref !== msgId) {
+  Customer.findOne({ messenger_id: `${ref}` }).exec(function (err, customer) {
+    if (err) return console.log(err)
+    if (!customer) {
+      console.log(`No have customers with id ${ref} in base. Bad REF in link`)
+    } else {
+      if (!~customer.invitations.indexOf(msgId)) {
+        customer.invitations.push(msgId)
+        customer.save(function (err) {
+          if (err) console.log(err)
+          console.log(`Customers ${ref} invitations were successfully updated.`)
+          bot.say(
+            {
+              text: `${messengerLink}?ref=${ref} is activated by user ${msgId}`,
+              channel: `${ref}`
+            }
+          )
+          if (customer.invitations !== 0 && customer.invitations.length % 3 === 0) {
+            bot.say(
+              {
+                text: `You have collected 3 activated invitations. Now you can get 1 free product in our store.`,
+                channel: `${ref}`
+              })
+          }
+        })
+      }
+    }
+  })
+}
+});
 
 
 
