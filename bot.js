@@ -1,8 +1,5 @@
 
 
-var env = require('node-env-file');
-env(__dirname + '/.env');
-
 
 
 var Botkit = require('botkit');
